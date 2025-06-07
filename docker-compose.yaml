@@ -1,4 +1,4 @@
 services:
-  pmp-summary:
+  firekeeper:
     image: rickjhoppe/firekeeper:latest
     container_name: firekeeper
