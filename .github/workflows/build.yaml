@@ -1,8 +1,6 @@
 name: Docker Build
 
 on:
-  push:
-    branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
 
@@ -13,3 +11,5 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build Docker image
         run: docker build -t firekeeper .
+      - name: Run tests
+        run: go test -v ./...
