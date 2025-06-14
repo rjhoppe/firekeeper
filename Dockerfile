@@ -27,4 +27,7 @@ WORKDIR /root/
 # Copy the binary from the builder stage
 COPY --from=builder /app/firekeeper .
 
+# For health check endpoint
+EXPOSE 8081
+
 CMD ["./firekeeper"]
