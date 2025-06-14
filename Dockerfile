@@ -1,5 +1,5 @@
 # ---- Build Stage ----
-FROM golang:1.23-alpine AS builder
+FROM golang:1.24-alpine AS builder
 
 # Install git (required for go get) and ca-certificates
 RUN apk add --no-cache git ca-certificates
@@ -26,5 +26,8 @@ WORKDIR /root/
 
 # Copy the binary from the builder stage
 COPY --from=builder /app/firekeeper .
+
+# For health check endpoint
+EXPOSE 8081
 
 CMD ["./firekeeper"]

@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"net/http"
 
 	"github.com/go-co-op/gocron/v2"
 	"github.com/rjhoppe/firekeeper/requests"
@@ -19,7 +20,7 @@ func main() {
 		gocron.CronJob("30 17 * * 5", false), // false = use local time
 		gocron.NewTask(func() {
 			log.Println("Sending scheduled GET request for Drink of the Day...")
-			req := requests.GETRequest{Url: "http://localhost:8080/bartender/random"}
+			req := requests.GETRequest{Url: "http://10.0.0.86:8080/bartender/random"}
 			req.Send()
 		}),
 	)
@@ -32,7 +33,7 @@ func main() {
 		gocron.CronJob("0 14 * * 6", false),
 		gocron.NewTask(func() {
 			log.Println("Sending scheduled GET request for dinner...")
-			req := requests.GETRequest{Url: "http://localhost:8080/dinner/random"}
+			req := requests.GETRequest{Url: "http://10.0.0.86:8080/dinner/random"}
 			req.Send()
 		}),
 	)
@@ -44,6 +45,18 @@ func main() {
 	s.Start()
 
 	log.Println("Scheduler started. Press Ctrl+C to exit.")
+
+	// Start health check endpoint in a goroutine
+	go func() {
+		http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte("ok"))
+		})
+		log.Println("Health check endpoint running on :8081/health")
+		if err := http.ListenAndServe(":8081", nil); err != nil {
+			log.Fatalf("Health check server failed: %v", err)
+		}
+	}()
 
 	// Keep the program running
 	select {}
