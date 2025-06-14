@@ -1,0 +1,4 @@
+services:
+  firekeeper:
+    image: rickjhoppe/firekeeper:latest
+    container_name: firekeeper
