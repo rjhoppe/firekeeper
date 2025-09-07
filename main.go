@@ -20,7 +20,7 @@ func main() {
 		gocron.CronJob("30 17 * * 5", false), // false = use local time
 		gocron.NewTask(func() {
 			log.Println("Sending scheduled GET request for Drink of the Day...")
-			req := requests.GETRequest{Url: "http://108.28.44.245:8080/bartender/random"}
+			req := requests.GETRequest{Url: "http://192.168.50.51:8080/bartender/random"}
 			req.Send()
 		}),
 	)
@@ -33,7 +33,7 @@ func main() {
 		gocron.CronJob("0 14 * * 6", false),
 		gocron.NewTask(func() {
 			log.Println("Sending scheduled GET request for dinner...")
-			req := requests.GETRequest{Url: "http://108.28.44.245:8080/dinner/random"}
+			req := requests.GETRequest{Url: "http://192.168.50.51:8080/dinner/random"}
 			req.Send()
 		}),
 	)
